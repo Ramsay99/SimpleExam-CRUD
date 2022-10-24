@@ -3,6 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'screen/create_user.dart';
 
+/// Applying Johannes Milke CRUD example from YouTube,
+/// URL: https://www.youtube.com/watch?v=ErP_xomHKTw&ab_channel=JohannesMilke
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

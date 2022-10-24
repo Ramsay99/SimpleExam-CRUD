@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../user/user.dart';
 
+// ToDo: better UI, start at 6:20 
 class CreateUser extends StatefulWidget {
   const CreateUser({super.key});
 
