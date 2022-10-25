@@ -3,9 +3,14 @@ import 'package:simpleexam/screen/create_user.dart';
 
 import '../user/user.dart';
 
-class CRUDHome extends StatelessWidget {
+class CRUDHome extends StatefulWidget {
   const CRUDHome({super.key});
 
+  @override
+  State<CRUDHome> createState() => _CRUDHomeState();
+}
+
+class _CRUDHomeState extends State<CRUDHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +33,7 @@ class CRUDHome extends StatelessWidget {
           } else if (snapshot.hasData) {
             final users = snapshot.data!;
             return ListView(
-                children: users.map(User.displayUsers_ListView).toList());
+                children: users.map(User.displayUser_ListTile).toList());
           } else {
             return const Center(
               child: Text("Error, in StreamBuilding Users Data as ListView!"),
@@ -42,8 +47,9 @@ class CRUDHome extends StatelessWidget {
           size: 40,
         ),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const CreateUser()));
+          Navigator.of(context).pushNamed(
+            '/createuser',
+          );
         },
       ),
     );

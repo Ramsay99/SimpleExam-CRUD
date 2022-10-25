@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:simpleexam/screen/crud_home.dart';
-
-import 'screen/create_user.dart';
+import 'package:simpleexam/route_generator/route_generator.dart';
 
 /// Applying Johannes Milke CRUD example from YouTube,
 /// URL: https://www.youtube.com/watch?v=ErP_xomHKTw&ab_channel=JohannesMilke
@@ -20,7 +18,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CRUDHome(),
+      initialRoute: '/', 
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

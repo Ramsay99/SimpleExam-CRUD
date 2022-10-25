@@ -30,7 +30,8 @@ class User {
             snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
   }
 
-  static Widget displayUsers_ListView(User user) {
+  static Widget displayUser_ListTile(User user) {
+    bool isSelected = false;
     return ListTile(
       isThreeLine: true,
       leading: CircleAvatar(child: Text('${user.age}')),
