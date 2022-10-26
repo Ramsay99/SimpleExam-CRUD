@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:simpleexam/screen/create_user.dart';
-
+import 'package:simpleexam/screen/edit_user.dart';
 import '../user/user.dart';
+
+Row _homeTitle = Row(
+  children: const [
+    Icon(Icons.home_rounded),
+    Padding(padding: EdgeInsets.only(right: 10)),
+    Text("CRUD"),
+  ],
+);
 
 class CRUDHome extends StatefulWidget {
   const CRUDHome({super.key});
@@ -11,47 +18,98 @@ class CRUDHome extends StatefulWidget {
 }
 
 class _CRUDHomeState extends State<CRUDHome> {
+  late User tappedUser;
+  late AsyncSnapshot<List<User>> snapshot;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: const [
-            Icon(Icons.home_rounded),
-            Text("CRUD"),
-          ],
-        ),
+        title: _homeTitle,
       ),
       // ToDo: Write a method to Get a single user, YT: 11:17
       body: StreamBuilder(
         stream: User.getUsers(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Something has Error, ${snapshot.error}'),
-            );
-          } else if (snapshot.hasData) {
-            final users = snapshot.data!;
-            return ListView(
-                children: users.map(User.displayUser_ListTile).toList());
-          } else {
-            return const Center(
-              child: Text("Error, in StreamBuilding Users Data as ListView!"),
-            );
+        builder: (context, builderSnapShot) {
+          snapshot = builderSnapShot;
+          if (snapshot.hasData) {
+            return displayUsersInListTile();
+          }
+          // if (snapshot.hasError) {
+          //   return Center(
+          //     child: Text('Error!,\n ${snapshot.error}'),
+          //   );
+          // }
+          else {
+            return loadingStreamBuilding();
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(
-          Icons.add,
-          size: 40,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(
-            '/createuser',
-          );
-        },
+      floatingActionButton: createUserFloatingBtn(context),
+    );
+  }
+
+  Widget displayUsersInListTile() {
+    final users = snapshot.data!;
+    return ListView(
+      children: users.map(usersInListTile).toList(),
+    );
+  }
+
+  Widget usersInListTile(User user) {
+    setTappedUser(user);
+    return ListTile(
+      isThreeLine: true,
+      leading: CircleAvatar(child: Text('${tappedUser.age}')),
+      title: Text(tappedUser.name),
+      subtitle: Text("${user.accCreated.toIso8601String()}\n${user.id}"),
+      onTap: () {
+        setTappedUser(user);
+        showEditDialog();
+      },
+    );
+  }
+
+  void setTappedUser(User user) {
+    tappedUser = user;
+  }
+
+  void showEditDialog() {
+    setEditUser();
+    _showEditDialog();
+  }
+
+  void setEditUser() {
+    EditUser.setEditedUser(tappedUser);
+  }
+
+  _showEditDialog() {
+    EditUser.dialogEditUser(context);
+  }
+
+  Center loadingStreamBuilding() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          CircularProgressIndicator(),
+          Text("Loading StreamBuilding Users Data as ListView!"),
+        ],
       ),
+    );
+  }
+
+  FloatingActionButton createUserFloatingBtn(BuildContext context) {
+    return FloatingActionButton(
+      child: const Icon(
+        Icons.add,
+        size: 40,
+      ),
+      onPressed: () {
+        Navigator.of(context).pushNamed(
+          '/createuser',
+        );
+      },
     );
   }
 }
