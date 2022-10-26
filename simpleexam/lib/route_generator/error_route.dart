@@ -4,10 +4,10 @@ Route<dynamic> errorRoute() {
   return MaterialPageRoute(builder: (_) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Error'),
+        title: const Text('Error in Route'),
       ),
       body: const Center(
-        child: Text('ERROR'),
+        child: Text('ERROR!'),
       ),
     );
   });
