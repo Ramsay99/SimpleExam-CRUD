@@ -1,9 +1,8 @@
 import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../user/user.dart';
 
-// ToDo: better UI, start at 6:20 
+// ToDo: better UI, the YT UI part starts at 6:20
 class CreateUser extends StatefulWidget {
   const CreateUser({super.key});
 
@@ -37,7 +36,7 @@ class _CreateUserState extends State<CreateUser> {
 
   Future createUser({required String name, int age = -1}) async {
     // Reference to document in firestore
-    final docUser = FirebaseFirestore.instance.collection('users').doc();
+    final docUser = usersCollection.doc();
 
     final User user = User(
       id: docUser.id,
@@ -49,6 +48,8 @@ class _CreateUserState extends State<CreateUser> {
     final userJson = user.toJson();
 
     // create Document and write data in firebase
+    // [.set] Sets data on the document, overwriting any existing data. If the document does not yet exist, it will be created.
+    // [.update] Updates data on the document. Data will be merged with any existing document data. If no document exists yet, the update will fail.
     await docUser.set(userJson);
   }
 }
