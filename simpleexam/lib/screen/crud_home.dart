@@ -9,6 +9,18 @@ Row _homeTitle = Row(
     Text("CRUD"),
   ],
 );
+const Padding _clickOnToEditDelUserText = Padding(
+  padding: EdgeInsets.symmetric(vertical: 4),
+  child: Text(
+    "Click on any User to Edit/Delete",
+    style: TextStyle(fontSize: 20),
+  ),
+);
+var _coloredBox = const Divider(
+  color: Colors.black,
+  thickness: 2,
+  height: 0,
+);
 
 class CRUDHome extends StatefulWidget {
   const CRUDHome({super.key});
@@ -33,14 +45,18 @@ class _CRUDHomeState extends State<CRUDHome> {
         builder: (context, builderSnapShot) {
           snapshot = builderSnapShot;
           if (snapshot.hasData) {
-            return displayUsersInListTile();
-          }
-          // if (snapshot.hasError) {
-          //   return Center(
-          //     child: Text('Error!,\n ${snapshot.error}'),
-          //   );
-          // }
-          else {
+            return Column(
+              children: [
+                _clickOnToEditDelUserText,
+                _coloredBox,
+                displayUsersInListTile(),
+              ],
+            );
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Text('Error!,\n ${snapshot.error}'),
+            );
+          } else {
             return loadingStreamBuilding();
           }
         },
@@ -50,9 +66,11 @@ class _CRUDHomeState extends State<CRUDHome> {
   }
 
   Widget displayUsersInListTile() {
-    final users = snapshot.data!;
-    return ListView(
-      children: users.map(usersInListTile).toList(),
+    final List<User> users = snapshot.data!;
+    return Expanded(
+      child: ListView(
+        children: users.map(usersInListTile).toList(),
+      ),
     );
   }
 

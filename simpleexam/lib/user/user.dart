@@ -65,4 +65,8 @@ class User {
   String getAccCreated() {
     return accCreated.toIso8601String();
   }
+
+  void delUser() {
+    getID().delete();
+  }
 }
